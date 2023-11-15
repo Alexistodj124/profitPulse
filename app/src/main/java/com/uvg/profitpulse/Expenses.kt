@@ -118,7 +118,7 @@ class Expenses : ComponentActivity() {
             TextField(
                 value = expenseName,
                 onValueChange = { onNameChange(it) },
-                label = { Text("Expense Name") },
+                label = { Text("Nombre del gasto") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)
@@ -128,7 +128,7 @@ class Expenses : ComponentActivity() {
             TextField(
                 value = expenseValue,
                 onValueChange = { onValueChange(it) },
-                label = { Text("Expense Value") },
+                label = { Text("Valor del gasto") },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -147,7 +147,7 @@ class Expenses : ComponentActivity() {
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)
             ) {
-                Text("Add Expense")
+                Text("Agregar gasto")
             }
 
             // Expense List
@@ -161,19 +161,16 @@ class Expenses : ComponentActivity() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.Gray)
+                    .background(Color.Green)
                     .padding(8.dp)
             ) {
-                Text("Total Spent: $totalSpent", color = Color.White)
+                Text("Total: $totalSpent", color = Color.White)
             }
         }
     }
 
     @Composable
     fun ExpenseItem(expense: Expense) {
-        // Implement your UI for displaying each expense item
-        // You can use a Row, Column, or any other layout that suits your needs
-        // For example:
         Column(
             modifier = Modifier
                 .fillMaxWidth()
