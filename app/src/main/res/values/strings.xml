@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ProfitPulse</string>
+    <string name="HomeGreeting">Bienvenido</string>
+    <string name="Login">Iniciar Sesión</string>
 </resources>
