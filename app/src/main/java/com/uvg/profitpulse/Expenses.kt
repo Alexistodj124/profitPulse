@@ -1,4 +1,4 @@
-package com.uvg.profitpulse
+package com.uvg.profitpulse/*package com.uvg.profitpulse
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -43,7 +43,8 @@ import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
 
 
 class Expenses : ComponentActivity() {
-    private val expensesList = mutableListOf<Expense>()
+    private val expensesList = mutableListOf<Expenses>()
+
     private var totalSpent = 0.0
     private var expenseName by mutableStateOf("")
     private var expenseValue by mutableStateOf("")
@@ -72,6 +73,12 @@ class Expenses : ComponentActivity() {
                         onNameChange = { expenseName = it },
                         onValueChange = { expenseValue = it }
                     )
+            ProfitPulseTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                 }
             }
         }
@@ -199,3 +206,4 @@ fun GreetingPreview() {
         )
     }
 }
+*/

@@ -1,6 +1,9 @@
 package com.example.prototipo_proyecto
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -36,13 +39,87 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.uvg.profitpulse.MainActivity
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
 
+class SignUpActivity : ComponentActivity() {
 
+    private lateinit var auth: FirebaseAuth
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            ProfitPulseTheme {
+                newAccount(
+                    onSignUpnClick = { email, password ->
+                        signUp(email, password)
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            reload()
+        }
+    }
+
+    private fun reload() {
+        auth.currentUser!!.reload().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(this, "Reload successful! Hello ${auth.currentUser?.displayName}", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            } else {
+                Log.e(TAG, "reload", task.exception)
+                Toast.makeText(this, "Failed to reload user.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun signUp(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "createUserWithEmail:success")
+                    val user = auth.currentUser
+                    Toast.makeText(this, "Account created: ${auth.currentUser?.uid}", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+    }
+
+    companion object {
+        private const val TAG = "SignUpActivity"
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun newAccount( modifier: Modifier = Modifier) {
+fun newAccount(
+    onSignUpnClick: (email: String, password: String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isChecked = remember { mutableStateOf(false) }
@@ -153,6 +230,11 @@ fun newAccount( modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     ProfitPulseTheme {
-        newAccount()
+        newAccount(
+            onSignUpnClick = { _, _ ->
+
+            },
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
