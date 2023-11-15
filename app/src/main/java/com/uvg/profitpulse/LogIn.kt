@@ -56,9 +56,8 @@ class LogIn : ComponentActivity() {
                         login(email, password)
                     },
                     onSignUpnClick = {
-                        startActivity(Intent(this, MainActivity::class.java))
-                    },
-                    modifier = Modifier.fillMaxSize()
+                        startActivity(Intent(this, CreateAccount::class.java))
+                    }
                 )
             }
         }
@@ -121,24 +120,19 @@ fun Prototype(
     val imageLogin = R.drawable.loginicon
     Column(modifier.fillMaxSize()){
         Text(
-            text = "ProfitPulse",
+            text = "Profit Pulse",
             textAlign = TextAlign.Center,
             fontSize = 40.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(bottom = 30.dp)
                 .offset(y = 25.dp)
         )
-        Text(
-            text = "ProfitPulse",
-            textAlign = TextAlign.Center,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.SemiBold,
+        Spacer(
             modifier = modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 30.dp)
-                .offset(y = 25.dp)
+                .fillMaxWidth()
+                .height(35.dp)
+                .background(Color.Transparent)
         )
         Image(
             painter = painterResource(id = imageLogin),
@@ -232,6 +226,7 @@ fun Prototype(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun PrototypePreview() {
@@ -242,8 +237,7 @@ fun PrototypePreview() {
             },
             onSignUpnClick = {
 
-            },
-            modifier = Modifier.fillMaxSize()
+            }
         )
     }
 }
