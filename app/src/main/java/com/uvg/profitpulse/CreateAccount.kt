@@ -73,7 +73,7 @@ class CreateAccount : ComponentActivity() {
         auth.currentUser!!.reload().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(this, "Reload successful! Hello ${auth.currentUser?.displayName}", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, Home::class.java))
                 finish()
             } else {
                 Log.e(TAG, "reload", task.exception)

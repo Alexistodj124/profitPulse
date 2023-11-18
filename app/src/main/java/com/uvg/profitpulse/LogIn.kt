@@ -74,7 +74,7 @@ class LogIn : ComponentActivity() {
         auth.currentUser!!.reload().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(this, "Reload successful! Hello ${auth.currentUser?.uid}", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, Home::class.java))
                 finish()
             } else {
                 Log.e(TAG, "reload", task.exception)
@@ -90,7 +90,7 @@ class LogIn : ComponentActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     // val user = auth.currentUser
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, Home::class.java))
                     finish()
                 } else {
                     // If sign in fails, display a message to the user.

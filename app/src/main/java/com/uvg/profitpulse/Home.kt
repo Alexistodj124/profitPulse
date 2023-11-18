@@ -103,7 +103,7 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "Q. 22000",
+                        text = "Q " + "",
                         fontSize = 18.sp,
                         modifier = modifier
                             .align(Alignment.CenterHorizontally)

@@ -30,6 +30,10 @@
             android:name=".CreateAccount"
             android:exported="true"
             android:theme="@style/Theme.ProfitPulse" />
+        <activity
+            android:name=".Home"
+            android:exported="true"
+            android:theme="@style/Theme.ProfitPulse" />
     </application>
 
 </manifest>
