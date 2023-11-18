@@ -1,8 +1,11 @@
 package com.uvg.profitpulse
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -23,16 +26,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
 
 class Home : ComponentActivity() {
@@ -59,6 +66,7 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
     val cardList = remember {
         (1..4).map { CardItem(it, "Tarjeta $it") }
     }
+    val mContext = LocalContext.current
     val userImage = R.drawable.user_profile_pic
     Column(modifier.fillMaxSize()){
         Row( modifier = Modifier
@@ -68,9 +76,11 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                 contentDescription = "App User Icon",
                 modifier = modifier
                     .size(70.dp)
-                    .padding(top = 10.dp,
+                    .padding(
+                        top = 10.dp,
                         end = 10.dp,
-                        start = 10.dp)
+                        start = 10.dp
+                    )
             )
             Text(
                 text = stringResource(R.string.HomeGreeting),
@@ -118,10 +128,13 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
             modifier = modifier
                 .padding(start = 40.dp, top = 10.dp)
         )
-        Button(onClick = {},
+        Button(onClick = {
+            mContext.startActivity(Intent(mContext, Reminders::class.java))
+        },
         modifier = modifier
             .align(Alignment.CenterHorizontally)
-            .padding(top = 15.dp),
+            .fillMaxWidth()
+            .padding(top = 15.dp, start = 40.dp, end = 40.dp),
         colors = ButtonDefaults.buttonColors(
         containerColor = Color (65, 195, 121))
         ){
@@ -132,7 +145,8 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
         Button(onClick = {},
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(5.dp),
+                .fillMaxWidth()
+                .padding(top = 5.dp, start = 40.dp, end = 40.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color (65, 195, 121))
         ){
@@ -143,7 +157,8 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
         Button(onClick = {},
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(5.dp),
+                .fillMaxWidth()
+                .padding(top = 5.dp, start = 40.dp, end = 40.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color (65, 195, 121))
         ){
@@ -154,7 +169,8 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
         Button(onClick = {},
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(5.dp),
+                .fillMaxWidth()
+                .padding(top = 5.dp, start = 40.dp, end = 40.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color (65, 195, 121))
         ){
@@ -162,10 +178,13 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                 text = "Resumen"
             )
         }
-        Button(onClick = {},
+        Button(onClick = {
+            mContext.startActivity(Intent(mContext, Reminders::class.java))
+        },
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(5.dp),
+                .fillMaxWidth()
+                .padding(top = 5.dp, start = 40.dp, end = 40.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color (65, 195, 121))
         ){
