@@ -119,11 +119,11 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                 .padding(start = 40.dp, top = 10.dp)
         )
         Button(onClick = {},
-        modifier = modifier
-            .align(Alignment.CenterHorizontally)
-            .padding(top = 15.dp),
-        colors = ButtonDefaults.buttonColors(
-        containerColor = Color (65, 195, 121))
+            modifier = modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 15.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color (65, 195, 121))
         ){
             Text(
                 text = "Registro de gastos"
@@ -173,6 +173,7 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                 text = "Recordatorios"
             )
         }
+
 
     }
 }
