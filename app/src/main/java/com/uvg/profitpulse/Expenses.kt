@@ -1,201 +1,141 @@
-package com.uvg.profitpulse
+package com.example.prototipo_proyecto
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.KeyboardType
-import java.time.LocalDate
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.uvg.profitpulse.R
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
 
 
-class Expenses : ComponentActivity() {
-    private val expensesList = mutableListOf<Expense>()
-    private var totalSpent = 0.0
-    private var expenseName by mutableStateOf("")
-    private var expenseValue by mutableStateOf("")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                ProfitPulseTheme {
-                    ExpenseTracker(
-                        expensesList = expensesList,
-                        totalSpent = totalSpent,
-                        expenseName = expenseName,
-                        expenseValue = expenseValue,
-                        onAddExpense = { expense ->
-                            expensesList.add(expense)
-                            totalSpent += expense.value
-
-                            // Clear input fields
-                            expenseName = ""
-                            expenseValue = ""
-                        },
-                        onNameChange = { expenseName = it },
-                        onValueChange = { expenseValue = it }
-                    )
-                }
-            }
-        }
-    }
-
-    @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
-    @Composable
-    fun ExpenseTracker(
-        expensesList: List<Expense>,
-        totalSpent: Double,
-        expenseName: String,
-        expenseValue: String,
-        onAddExpense: (Expense) -> Unit,
-        onNameChange: (String) -> Unit,
-        onValueChange: (String) -> Unit,
-        modifier: Modifier = Modifier
-    ) {
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun expenseTracker( modifier: Modifier = Modifier) {
+    var expenseName by remember { mutableStateOf("") }
+    var expenseValue by remember { mutableStateOf("") }
+    Column{
         Text(
             text = "Registro de gastos",
-            color = Color.Black,
-            style = TextStyle(fontSize = 27.sp),
+            style = TextStyle(fontSize = 18.sp),
+            fontWeight = FontWeight.Bold,
             modifier = modifier
-                .padding(start = 55.dp, top = 80.dp)
+                .fillMaxSize()
+                .padding(28.dp)
         )
-        Box(
+        Image(
+            painter = painterResource(id = R.drawable.flecha_correcta__1_),
+            contentDescription = null,
             modifier = modifier
-                .fillMaxSize()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.flecha_correcta__1_),
-                contentDescription = null,
-                modifier = modifier
-                    .offset(x = 17.dp, y = 45.dp)
-                    .size(25.dp)
-            )
-        }
-
-        Column(
+                .padding(top = 3.dp, start = 25.dp)
+                .size(25.dp)
+        )
+        TextField(
+            value = expenseName,
+            label = {
+                Text(
+                    text = "Nombre del gasto",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(15, 223, 105)
+                )
+            },
+            onValueChange = {expenseName = it},
             modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            // Name input
-            TextField(
-                value = expenseName,
-                onValueChange = { onNameChange(it) },
-                label = { Text("Nombre del gasto") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
+                .align(Alignment.CenterHorizontally),
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.Transparent,
             )
-
-            // Value input
-            TextField(
-                value = expenseValue,
-                onValueChange = { onValueChange(it) },
-                label = { Text("Valor del gasto") },
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            )
-
-            // Add Expense Button
-            Button(
-                onClick = {
-                    if (expenseName.isNotEmpty() && expenseValue.isNotEmpty()) {
-                        val value = expenseValue.toDouble()
-                        onAddExpense(Expense(expenseName, value))
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            ) {
-                Text("Agregar gasto")
-            }
-
-            // Expense List
-            LazyColumn {
-                items(expensesList) { expense ->
-                    ExpenseItem(expense)
-                }
-            }
-
-            // Total Spent
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Green)
-                    .padding(8.dp)
-            ) {
-                Text("Total: $totalSpent", color = Color.White)
-            }
-        }
-    }
-
-    @Composable
-    fun ExpenseItem(expense: Expense) {
-        Column(
-            modifier = Modifier
+        )
+        Spacer(
+            modifier = modifier
                 .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            Text("Name: ${expense.name}")
-            Text("Value: ${expense.value}")
+                .height(35.dp)
+                .background(Color.Transparent)
+        )
+        TextField(
+            value = expenseValue,
+            label = {
+                Text(
+                    text = "Valor del gasto",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(15, 223, 105)
+                )
+            },
+            onValueChange = {expenseValue = it},
+            modifier = modifier
+                .align(Alignment.CenterHorizontally),
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.Transparent
+            )
+        )
+        Spacer(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(29.dp)
+                .background(Color.Transparent)
+        )
+
+
+
+        Button(onClick ={},
+            modifier = modifier
+                .align(Alignment.CenterHorizontally),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color (32, 193, 102)
+            )
+        ){
+            Text(text = "Agregar gasto",
+                fontSize = 20.sp
+            )
         }
     }
 
-    data class Expense(val name: String, val value: Double)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun TrackerPreview() {
     ProfitPulseTheme {
-        ExpenseTracker(
-            expensesList = emptyList(),
-            totalSpent = 0.0,
-            expenseName = "",
-            expenseValue = "",
-            onAddExpense = {},
-            onNameChange = {},
-            onValueChange = {}
-        )
+        expenseTracker()
     }
 }
