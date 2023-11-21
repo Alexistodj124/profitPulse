@@ -54,6 +54,12 @@ fun ExpenseTracker(modifier: Modifier = Modifier) {
     var description by remember { mutableStateOf("") }
     var amount by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
+    var expenses by remember { mutableStateOf(listOf<Double>()) }
+
+    fun calculateTotal(): Double {
+        return expenses.sum()
+    }
+
     Column(modifier.fillMaxSize()){
         Image(
             painter = painterResource(id = R.drawable.flecha_correcta__2_),
@@ -70,7 +76,6 @@ fun ExpenseTracker(modifier: Modifier = Modifier) {
             modifier = modifier
                 .align(Alignment.Start)
                 .padding(start = 35.dp, top = 25.dp)
-
         )
         Spacer(
             modifier = modifier
@@ -78,6 +83,7 @@ fun ExpenseTracker(modifier: Modifier = Modifier) {
                 .height(15.dp)
                 .background(Color.Transparent)
         )
+
         OutlinedTextField(
             value = description,
             onValueChange = { description = it },
@@ -127,7 +133,13 @@ fun ExpenseTracker(modifier: Modifier = Modifier) {
                 .height(15.dp)
                 .background(Color.Transparent)
         )
-        Button(onClick ={ },
+        Button(
+            onClick ={
+                expenses = expenses + (amount.toDoubleOrNull() ?: 0.0)
+                description = "" //clean fields
+                amount = ""
+                date = ""
+            },
             modifier = modifier
                 .align(Alignment.CenterHorizontally),
             colors = ButtonDefaults.buttonColors(
@@ -137,6 +149,29 @@ fun ExpenseTracker(modifier: Modifier = Modifier) {
             Text(text = "Agregar gasto",
                 fontSize = 25.sp)
         }
+        Spacer(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(23.dp)
+                .background(Color.Transparent)
+        )
+        Text(
+            text = "Total",
+            textAlign = TextAlign.Center,
+            fontSize = 25.sp,
+            color = Color(15, 223, 105),
+            fontWeight = FontWeight.SemiBold,
+            modifier = modifier
+                .align(Alignment.Start)
+                .padding(start = 35.dp)
+        )
+        Text(
+            "Total de gastos: ${calculateTotal()}",
+            fontSize = 20.sp,
+            modifier = modifier
+                .padding(start = 120.dp, top = 40.dp)
+        )
+
 
 
     }
