@@ -31,6 +31,10 @@ class AuthManager {
         }
     }
 
+    fun signOut(){
+        auth.signOut()
+    }
+
     suspend fun signInWithEmailAndPassword(
         email: String,
         password: String

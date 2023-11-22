@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.core.Context
 import com.uvg.profitpulse.Model.Gastos
 import com.uvg.profitpulse.Model.Ventas
@@ -73,7 +74,7 @@ data class CardItem(val id: Int, val title: String)
 
 @Composable
 fun HomeScreen(modifier: Modifier    = Modifier,realtimeManager: RealtimeManager, authManager: AuthManager) {
-
+    val user = authManager.getCurrentUser()
     val mContext = LocalContext.current
     val userImage = R.drawable.user_profile_pic
 
@@ -105,6 +106,12 @@ fun HomeScreen(modifier: Modifier    = Modifier,realtimeManager: RealtimeManager
                         start = 10.dp
                     )
             )
+            SignOutButton {
+                // Handle sign-out logic
+                authManager.signOut()
+                mContext.startActivity(Intent(mContext, LogIn::class.java))
+            }
+
             Text(
                 text = stringResource(R.string.HomeGreeting),
                 fontSize = 25.sp,
@@ -232,15 +239,20 @@ fun HomeScreen(modifier: Modifier    = Modifier,realtimeManager: RealtimeManager
 
     }
 }
-
-
-sealed class BottomNavScreen(val route: String, val title: String) {
-    object Contact : BottomNavScreen(
-        route = "contact",
-        title = "Contactos",
-    )
-
+@Composable
+fun SignOutButton(onSignOutClick: () -> Unit) {
+    Button(
+        onClick = onSignOutClick,
+        modifier = Modifier
+            .padding(vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                containerColor = Color (65, 195, 121))
+    ) {
+        Text("Sign Out")
+    }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

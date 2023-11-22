@@ -197,7 +197,9 @@ fun newAccount(
             )
         }
 
-        Button(onClick ={ },
+        Button(onClick ={
+
+                        },
             modifier = modifier
                 .align(Alignment.CenterHorizontally),
             colors = ButtonDefaults.buttonColors(
