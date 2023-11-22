@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.uvg.profitpulse.Model.Gastos
 import com.uvg.profitpulse.Model.Recordatorios
+import com.uvg.profitpulse.Model.Ventas
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.callbackFlow
 class RealtimeManager(context: android.content.Context) {
     private val databaseReferenceG: DatabaseReference = FirebaseDatabase.getInstance().reference.child("gastos")
     private val databaseReferenceR: DatabaseReference = FirebaseDatabase.getInstance().reference.child("recordatorios")
+    private val databaseReferenceV: DatabaseReference = FirebaseDatabase.getInstance().reference.child("ventas")
     private val authManager = AuthManager()
 
     fun addGasto(gastos: Gastos){
@@ -76,6 +78,38 @@ class RealtimeManager(context: android.content.Context) {
                 }
             })
             awaitClose { databaseReferenceR.removeEventListener(listener) }
+        }
+        return flow
+
+    }
+    fun addVenta(ventas: Ventas){
+        val key = databaseReferenceV.push().key
+        if (key != null){
+            databaseReferenceV.child(key).setValue(ventas)
+        }
+    }
+    fun deleteVenta(ventaId: String){
+        databaseReferenceV.child(ventaId).removeValue()
+    }
+
+    fun getVentas(): Flow<List<Ventas>> {
+        val idFilter = authManager.getCurrentUser()?.uid
+
+        val flow = callbackFlow {
+            val listener = databaseReferenceV.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val contacts = snapshot.children.mapNotNull { snapshot ->
+                        val contact = snapshot.getValue(Ventas::class.java)
+                        snapshot.key?.let { contact?.copy(key = it) }
+                    }
+                    trySend(contacts.filter { it.uid == idFilter }).isSuccess
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    close(error.toException())
+                }
+            })
+            awaitClose { databaseReferenceV.removeEventListener(listener) }
         }
         return flow
 

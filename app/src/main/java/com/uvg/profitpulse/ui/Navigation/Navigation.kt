@@ -12,11 +12,12 @@ import com.uvg.profitpulse.ui.screens.Screen
 import com.uvg.profitpulse.ui.screens.HomeScreen
 import com.uvg.profitpulse.ui.screens.reminders
 import com.uvg.profitpulse.utils.AuthManager
+import com.uvg.profitpulse.utils.RealtimeManager
 
 @Composable
 fun Navigation(context: Context, navController: NavHostController = rememberNavController()) {
-    val authManager: AuthManager = AuthManager()
-
+    lateinit var realtimeManager: RealtimeManager
+    lateinit var authManager: AuthManager
     val user: FirebaseUser? = authManager.getCurrentUser()
 
     Screen {
@@ -25,7 +26,7 @@ fun Navigation(context: Context, navController: NavHostController = rememberNavC
             startDestination = if(user == null) Routes.Login.route else Routes.Home.route
         ) {
             composable(Routes.Home.route) {
-                HomeScreen()
+                HomeScreen(realtimeManager = realtimeManager, authManager = authManager)
             }
         }
     }

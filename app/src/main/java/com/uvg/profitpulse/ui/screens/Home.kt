@@ -2,6 +2,7 @@ package com.uvg.profitpulse.ui.screens
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -24,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,14 +41,20 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.firebase.database.core.Context
+import com.uvg.profitpulse.Model.Gastos
+import com.uvg.profitpulse.Model.Ventas
 import com.uvg.profitpulse.R
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
 import com.uvg.profitpulse.utils.AuthManager
 import com.uvg.profitpulse.utils.RealtimeManager
 
 class Home : ComponentActivity() {
+    private lateinit var realtimeManager: RealtimeManager
+    private lateinit var authManager: AuthManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        realtimeManager = RealtimeManager(getApplicationContext())
+        authManager = AuthManager()
         setContent {
             ProfitPulseTheme {
                 // A surface container using the 'background' color from the theme
@@ -54,7 +62,7 @@ class Home : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+                    HomeScreen(realtimeManager = realtimeManager, authManager = authManager)
                 }
             }
         }
@@ -64,12 +72,25 @@ class Home : ComponentActivity() {
 data class CardItem(val id: Int, val title: String)
 
 @Composable
-fun HomeScreen(modifier: Modifier    = Modifier) {
-    val cardList = remember {
-        (1..4).map { CardItem(it, "Tarjeta $it") }
-    }
+fun HomeScreen(modifier: Modifier    = Modifier,realtimeManager: RealtimeManager, authManager: AuthManager) {
+
     val mContext = LocalContext.current
     val userImage = R.drawable.user_profile_pic
+
+    //FIREBASE
+    //VENTAS
+    val ventas: List<Ventas> = realtimeManager.getVentas().collectAsState(emptyList()).value
+    if (ventas.isEmpty()) {
+        Log.d("TotalGastos", "La lista de gastos está vacía")
+    }
+    val totalVentasMonto: Double = ventas.sumOf { it.ventasMonto }
+    //GASTOS
+    val expenses: List<Gastos> = realtimeManager.getGasto().collectAsState(emptyList()).value
+    if (expenses.isEmpty()) {
+        Log.d("TotalGastos", "La lista de gastos está vacía")
+    }
+    val totalGastoMonto: Double = expenses.sumOf { it.gastoMonto }
+
     Column(modifier.fillMaxSize()){
         Row( modifier = Modifier
             .padding(5.dp)){
@@ -99,7 +120,7 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                 .background(Color.Transparent)
         )
         LazyRow(){
-            items(cardList){card ->
+            item {
                 Card( modifier = Modifier
                     .width(350.dp)
                     .height(200.dp)
@@ -107,7 +128,7 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                     .align(Alignment.CenterHorizontally)
                 ){
                     Text(
-                        text = "Resumen de ganancias mensuales",
+                        text = "Resumen de Ventas Totales",
                         fontSize = 19.sp,
                         modifier = modifier
                             .align(Alignment.CenterHorizontally)
@@ -115,7 +136,29 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "Q " + "",
+                        text = "Q $totalVentasMonto" ,
+                        fontSize = 18.sp,
+                        modifier = modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(top = 10.dp)
+                    )
+                }
+                Card( modifier = Modifier
+                    .width(350.dp)
+                    .height(200.dp)
+                    .padding(start = 49.dp, end = 10.dp)
+                    .align(Alignment.CenterHorizontally)
+                ){
+                    Text(
+                        text = "Resumen de Gastos Totales",
+                        fontSize = 19.sp,
+                        modifier = modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(top = 15.dp),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "Q $totalGastoMonto" ,
                         fontSize = 18.sp,
                         modifier = modifier
                             .align(Alignment.CenterHorizontally)
@@ -203,6 +246,5 @@ sealed class BottomNavScreen(val route: String, val title: String) {
 @Composable
 fun GreetingPreview2() {
     ProfitPulseTheme {
-        HomeScreen()
     }
 }

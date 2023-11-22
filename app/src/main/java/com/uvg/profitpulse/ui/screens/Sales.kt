@@ -1,6 +1,7 @@
 package com.uvg.profitpulse.ui.screens
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +49,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.android.play.integrity.internal.t
+import com.uvg.profitpulse.Model.Gastos
+import com.uvg.profitpulse.Model.Ventas
 import com.uvg.profitpulse.R
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
 import com.uvg.profitpulse.utils.AuthManager
@@ -66,7 +72,7 @@ class Sales : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SalesTracker()
+                    SalesTracker(realtimeManager = realtimeManager, authManager = authManager)
                 }
             }
         }
@@ -74,14 +80,10 @@ class Sales : ComponentActivity() {
 }
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun SalesTracker(modifier: Modifier = Modifier) {
+fun SalesTracker(modifier: Modifier = Modifier,realtimeManager: RealtimeManager, authManager: AuthManager) {
     var name by remember { mutableStateOf("") }
     var product by remember { mutableStateOf("") }
-    var total by remember { mutableStateOf("") }
-
-    fun calculateTotal(): Double {
-        return total.toDoubleOrNull() ?: 0.0
-    }
+    var total by remember { mutableStateOf(0.0) }
 
     Column(modifier.fillMaxSize()){
         Image(
@@ -127,8 +129,8 @@ fun SalesTracker(modifier: Modifier = Modifier) {
                 .background(Color.Transparent)
         )
         OutlinedTextField(
-            value = total,
-            onValueChange = { total = it },
+            value = total.toString(),
+            onValueChange = { total = (it.toDoubleOrNull()?:0) as Double },
             label = { Text(stringResource(R.string.Total)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = Modifier
@@ -144,9 +146,16 @@ fun SalesTracker(modifier: Modifier = Modifier) {
         )
         Button(
             onClick = {
+                val venta = Ventas(
+                    ventasCliente = name,
+                    ventasDescripcion = product,
+                    ventasMonto = total,
+                    uid = authManager.getCurrentUser()?.uid.toString()
+                )
+                realtimeManager.addVenta(venta)
                 name = ""
                 product = ""
-                total = ""
+                total = 0.0
             },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
@@ -165,28 +174,18 @@ fun SalesTracker(modifier: Modifier = Modifier) {
                 .height(23.dp)
                 .background(Color.Transparent)
         )
+        val ventas: List<Ventas> = realtimeManager.getVentas().collectAsState(emptyList()).value
+        if (ventas.isEmpty()) {
+            Log.d("TotalGastos", "La lista de gastos está vacía")
+        }
+        val totalVentasMonto: Double = ventas.sumOf { it.ventasMonto }
         Text(
-            text = stringResource(R.string.Total),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp,
-            color = Color(15, 223, 105),
-            fontWeight = FontWeight.SemiBold,
-            modifier = modifier
-                .align(Alignment.Start)
-                .padding(start = 35.dp)
-        )
-        Text(
-            "Total de la compra: ${calculateTotal()}",
+            "TOTAL VENTAS Q $totalVentasMonto",
             fontSize = 20.sp,
             modifier = modifier
-                .padding(start = 120.dp, top = 40.dp)
-        )
-        Image(
-            painter = painterResource(id = R.drawable.bolsa_de_la_compra),
-            contentDescription = null,
-            modifier = modifier
-                .padding(top = 40.dp, start = 100.dp)
-                .size(30.dp)
+                .padding(top = 40.dp)
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.Center)
         )
     }
 }
@@ -196,6 +195,5 @@ fun SalesTracker(modifier: Modifier = Modifier) {
 @Composable
 fun SalePreview() {
     ProfitPulseTheme {
-        SalesTracker()
     }
 }
