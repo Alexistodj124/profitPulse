@@ -1,5 +1,6 @@
-package com.uvg.profitpulse
+package com.uvg.profitpulse.ui.screens
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -28,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -41,11 +45,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.uvg.profitpulse.Model.Recordatorios
+import com.uvg.profitpulse.R
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
+import com.uvg.profitpulse.utils.AuthManager
+import com.uvg.profitpulse.utils.RealtimeManager
 import java.util.Date
 
+
 class Reminders : ComponentActivity() {
+    private lateinit var realtimeManager: RealtimeManager
+    private lateinit var authManager: AuthManager
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
             ProfitPulseTheme {
@@ -54,20 +66,26 @@ class Reminders : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    reminders()
+                    reminders(realtimeManager = realtimeManager, authManager = authManager)
                 }
             }
         }
     }
 }
-data class Reminder(val description: String, val date: Date)
+
 @Composable
-fun reminders(){
+fun reminders(realtimeManager: RealtimeManager, authManager: AuthManager){
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val reco = Recordatorios(
+            recordatorioDate = Date(2023,9,21),
+            recordatorioDescripcion = "HOLA COMO ESTAS",
+            uid = authManager.getCurrentUser()?.uid.toString()
+        )
+        realtimeManager.addRemidner(reco)
         Text(
             "Recordatorios",
             textAlign = TextAlign.Center,
@@ -77,7 +95,9 @@ fun reminders(){
             painter = painterResource(id = R.drawable.reminder),
             contentDescription = ""
         )
-        Column(
+        val recordatorios by realtimeManager.getReminder()
+            .collectAsState(emptyList())
+        LazyColumn(
             modifier = Modifier
                 .background(Color.White)
                 .fillMaxSize()
@@ -85,36 +105,19 @@ fun reminders(){
                 .verticalScroll(rememberScrollState())
 
         ) {
-            val reminders = remember {
-                mutableStateListOf(
-                    Reminder("Hacer Publicacion Chapstick (Instagram/Facebook)", Date(2023, 9, 20)),
-                    Reminder("Hacer TikTok Primer", Date(2023, 9, 21)),
-                    Reminder("Hacer Reel Piel Mixta", Date(2023, 9, 22)),
-                    Reminder("Hacer Publicacion Chapstick (Instagram/Facebook)", Date(2023, 9, 20)),
-                    Reminder("Hacer TikTok Primer", Date(2023, 9, 21)),
-                    Reminder("Hacer Reel Piel Mixta", Date(2023, 9, 22)),
-                    Reminder("Hacer Publicacion Chapstick (Instagram/Facebook)", Date(2023, 9, 20)),
-                    Reminder("Hacer TikTok Primer", Date(2023, 9, 21)),
-                    Reminder("Hacer Reel Piel Mixta", Date(2023, 9, 22)),
-                    Reminder("Hacer Publicacion Chapstick (Instagram/Facebook)", Date(2023, 9, 20)),
-                    Reminder("Hacer TikTok Primer", Date(2023, 9, 21)),
-                    Reminder("Hacer Reel Piel Mixta", Date(2023, 9, 22)),
-                    Reminder("Hacer Publicacion Chapstick (Instagram/Facebook)", Date(2023, 9, 20)),
-                    Reminder("Hacer TikTok Primer", Date(2023, 9, 21)),
-                    Reminder("Hacer Reel Piel Mixta", Date(2023, 9, 22)),
-                )
-            }
-            for (reminder in reminders.toList()) {
-                Card (
+
+            items(recordatorios) { recordatorio ->
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
                         .background(Color.White),
                     shape = MaterialTheme.shapes.medium,
-                ){
-                    ReminderRow(reminder = reminder) { isChecked ->
+                ) {
+
+                    ReminderRow(reminder = recordatorio, realtimeManager = realtimeManager) { isChecked ->
                         if (isChecked) {
-                            reminders.remove(reminder)
+                            // Do something when the reminder is checked
                         }
                     }
                 }
@@ -153,7 +156,7 @@ fun CircularButtonWithPlusSign() {
 }
 
 @Composable
-fun ReminderRow(reminder: Reminder, onCheckedChange: (Boolean) -> Unit) {
+fun ReminderRow(reminder: Recordatorios,realtimeManager: RealtimeManager, onCheckedChange: (Boolean) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -167,12 +170,12 @@ fun ReminderRow(reminder: Reminder, onCheckedChange: (Boolean) -> Unit) {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = reminder.description,
+                text = reminder.recordatorioDescripcion,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                text = "Date:" + reminder.date,
+                text = "Date:" + reminder.recordatorioDate,
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.primary
             )

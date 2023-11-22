@@ -1,4 +1,4 @@
-package com.uvg.profitpulse
+package com.uvg.profitpulse.ui.screens
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.uvg.profitpulse.MainActivity
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
 
 class CreateAccount : ComponentActivity() {
