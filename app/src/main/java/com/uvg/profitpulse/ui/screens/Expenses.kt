@@ -81,7 +81,7 @@ fun expenseTracker( modifier: Modifier = Modifier) {
                 .padding(28.dp)
         )
         Image(
-            painter = painterResource(id = R.drawable.flecha_correcta__1_),
+            painter = painterResource(id = R.drawable.flecha_correcta__2_),
             contentDescription = null,
             modifier = modifier
                 .padding(top = 3.dp, start = 25.dp)
