@@ -1,4 +1,5 @@
-package com.example.prototipo_proyecto
+package com.uvg.profitpulse.ui.screens
+
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -42,7 +43,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uvg.profitpulse.R
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
+import com.uvg.profitpulse.utils.AuthManager
+import com.uvg.profitpulse.utils.RealtimeManager
 
+class Resumen : ComponentActivity() {
+    private lateinit var realtimeManager: RealtimeManager
+    private lateinit var authManager: AuthManager
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        realtimeManager = RealtimeManager(getApplicationContext())
+        authManager = AuthManager()
+        setContent {
+            ProfitPulseTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Summary()
+                }
+            }
+        }
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Summary( modifier: Modifier = Modifier) {

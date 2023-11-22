@@ -38,6 +38,14 @@
             android:name=".ui.screens.Reminders"
             android:exported="true"
             android:theme="@style/Theme.ProfitPulse" />
+        <activity
+            android:name=".ui.screens.Sales"
+            android:exported="true"
+            android:theme="@style/Theme.ProfitPulse" />
+        <activity
+            android:name=".ui.screens.Resumen"
+            android:exported="true"
+            android:theme="@style/Theme.ProfitPulse" />
     </application>
 
 </manifest>

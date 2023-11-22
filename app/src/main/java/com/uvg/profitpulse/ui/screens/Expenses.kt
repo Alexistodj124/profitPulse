@@ -81,7 +81,7 @@ fun ExpenseTracker(modifier: Modifier = Modifier, realtimeManager: RealtimeManag
 
     Column(modifier.fillMaxSize()){
         Image(
-            painter = painterResource(id = R.drawable.flecha_correcta__1_),
+            painter = painterResource(id = R.drawable.flecha_correcta__2_),
             contentDescription = null,
             modifier = modifier
                 .padding(top = 30.dp, start = 25.dp)

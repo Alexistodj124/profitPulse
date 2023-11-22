@@ -144,7 +144,9 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                 text = "Registro de gastos"
             )
         }
-        Button(onClick = {},
+        Button(onClick = {
+            mContext.startActivity(Intent(mContext, Sales::class.java))
+        },
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
@@ -156,19 +158,9 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                 text = "Registro de ventas"
             )
         }
-        Button(onClick = {},
-            modifier = modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .padding(top = 5.dp, start = 40.dp, end = 40.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color (65, 195, 121))
-        ){
-            Text(
-                text = "Cálculo de ganancias"
-            )
-        }
-        Button(onClick = {},
+        Button(onClick = {
+            mContext.startActivity(Intent(mContext, Resumen::class.java))
+        },
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
