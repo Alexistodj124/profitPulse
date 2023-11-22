@@ -8,4 +8,13 @@
     <string name="Summary">Resumen</string>
     <string name="Reminders">Recordatorios</string>
     <string name="Menu_Title">Menu</string>
+    <string name="Expenses_Title">Registro de gastos</string>
+    <string name="Expense_name">Nombre del gasto</string>
+    <string name="Expense_cost">Valor del gasto</string>
+    <string name="Add_expense">Agregar gasto</string>
+    <string name="Sales_registry">Registro de ventas</string>
+    <string name="Sales_client">Nombre del cliente</string>
+    <string name="Sale_product">Productos comprados</string>
+    <string name="Total">Total</string>
+    <string name="Register_sale">Registrar venta</string>
 </resources>

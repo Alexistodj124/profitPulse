@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key.Companion.Calendar
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -68,7 +69,7 @@ fun SalesTracker(modifier: Modifier = Modifier) {
                 .size(30.dp)
         )
         Text(
-            text = "Registro de ventas",
+            text = stringResource(R.string.Sales_registry),
             textAlign = TextAlign.Center,
             fontSize = 30.sp,
             fontWeight = FontWeight.SemiBold,
@@ -86,7 +87,7 @@ fun SalesTracker(modifier: Modifier = Modifier) {
             value = name,
             onValueChange = { name = it },
             label = {
-                Text("Nombre del cliente")
+                Text(stringResource(R.string.Sales_client))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,7 +97,7 @@ fun SalesTracker(modifier: Modifier = Modifier) {
         OutlinedTextField(
             value = product,
             onValueChange = { product = it },
-            label = { Text("Productos comprados") },
+            label = { Text(stringResource(R.string.Sale_product)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -105,7 +106,7 @@ fun SalesTracker(modifier: Modifier = Modifier) {
         OutlinedTextField(
             value = total,
             onValueChange = { total = it },
-            label = { Text("Total") },
+            label = { Text(stringResource(R.string.Total)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = Modifier
                 .fillMaxWidth()
@@ -131,7 +132,7 @@ fun SalesTracker(modifier: Modifier = Modifier) {
             )
         ) {
             Text(
-                "Registrar venta",
+                stringResource(R.string.Register_sale),
                 fontSize = 28.sp
                 )
         }
@@ -142,7 +143,7 @@ fun SalesTracker(modifier: Modifier = Modifier) {
                 .background(Color.Transparent)
         )
         Text(
-            text = "Total",
+            text = stringResource(R.string.Total),
             textAlign = TextAlign.Center,
             fontSize = 25.sp,
             color = Color(15, 223, 105),

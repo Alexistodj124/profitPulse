@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -73,7 +74,7 @@ fun expenseTracker( modifier: Modifier = Modifier) {
     var expenseValue by remember { mutableStateOf("") }
     Column{
         Text(
-            text = "Registro de gastos",
+            text = stringResource(R.string.Expenses_Title),
             style = TextStyle(fontSize = 18.sp),
             fontWeight = FontWeight.Bold,
             modifier = modifier
@@ -91,7 +92,7 @@ fun expenseTracker( modifier: Modifier = Modifier) {
             value = expenseName,
             label = {
                 Text(
-                    text = "Nombre del gasto",
+                    text = stringResource(R.string.Expense_name),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color(15, 223, 105)
@@ -114,7 +115,7 @@ fun expenseTracker( modifier: Modifier = Modifier) {
             value = expenseValue,
             label = {
                 Text(
-                    text = "Valor del gasto",
+                    text = stringResource(R.string.Expense_cost),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color(15, 223, 105)
@@ -143,7 +144,7 @@ fun expenseTracker( modifier: Modifier = Modifier) {
                 containerColor = Color (32, 193, 102)
             )
         ){
-            Text(text = "Agregar gasto",
+            Text(text = stringResource(R.string.Add_expense),
                 fontSize = 20.sp
             )
         }
