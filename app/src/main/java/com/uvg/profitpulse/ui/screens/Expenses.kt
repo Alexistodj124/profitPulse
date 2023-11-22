@@ -1,8 +1,9 @@
-package com.example.prototipo_proyecto
+package com.uvg.profitpulse.ui.screens
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -30,50 +33,71 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.uvg.profitpulse.R
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
+import com.uvg.profitpulse.utils.AuthManager
+import com.uvg.profitpulse.utils.RealtimeManager
 
 
+class Expenses : ComponentActivity() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        setContent {
+            ProfitPulseTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    expenseTracker()
+                }
+            }
+        }
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun newAccount( modifier: Modifier = Modifier) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var isChecked = remember { mutableStateOf(false) }
-    Column(modifier.fillMaxSize()){
+fun expenseTracker( modifier: Modifier = Modifier) {
+    var expenseName by remember { mutableStateOf("") }
+    var expenseValue by remember { mutableStateOf("") }
+    Column{
         Text(
-            text = "Crear Cuenta",
-            textAlign = TextAlign.Center,
-            fontSize = 35.sp,
-            fontWeight = FontWeight.SemiBold,
+            text = "Registro de gastos",
+            style = TextStyle(fontSize = 18.sp),
+            fontWeight = FontWeight.Bold,
             modifier = modifier
-                .align(Alignment.Start)
-                .padding(start = 20.dp, top = 60.dp)
-
+                .fillMaxSize()
+                .padding(28.dp)
         )
-        Spacer(
+        Image(
+            painter = painterResource(id = R.drawable.flecha_correcta__1_),
+            contentDescription = null,
             modifier = modifier
-                .fillMaxWidth()
-                .height(23.dp)
-                .background(Color.Transparent)
+                .padding(top = 3.dp, start = 25.dp)
+                .size(25.dp)
         )
         TextField(
-            value = username,
+            value = expenseName,
             label = {
                 Text(
-                    text = "Email",
+                    text = "Nombre del gasto",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color(15, 223, 105)
                 )
             },
-            onValueChange = {username = it},
+            onValueChange = {expenseName = it},
             modifier = modifier
                 .align(Alignment.CenterHorizontally),
             colors = TextFieldDefaults.textFieldColors(
@@ -87,17 +111,16 @@ fun newAccount( modifier: Modifier = Modifier) {
                 .background(Color.Transparent)
         )
         TextField(
-            value = password,
+            value = expenseValue,
             label = {
                 Text(
-                    text = "Password",
+                    text = "Valor del gasto",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color(15, 223, 105)
                 )
             },
-            visualTransformation = PasswordVisualTransformation(),
-            onValueChange = {password = it},
+            onValueChange = {expenseValue = it},
             modifier = modifier
                 .align(Alignment.CenterHorizontally),
             colors = TextFieldDefaults.textFieldColors(
@@ -111,48 +134,27 @@ fun newAccount( modifier: Modifier = Modifier) {
                 .background(Color.Transparent)
         )
 
-        Row{
-            Checkbox(
-                checked = isChecked.value,
-                onCheckedChange = {  },
-                modifier = modifier
-                    .padding(start = 50.dp)
-            )
-            Text(
-                text="Acepto términos y condiciones",
-                fontSize = 16.sp,
-                color = Color(156,156,156),
-                modifier = modifier
-                    .padding(top = 12.dp)
-            )
-        }
 
-        Button(onClick ={ },
+
+        Button(onClick ={},
             modifier = modifier
                 .align(Alignment.CenterHorizontally),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color (32, 193, 102)
             )
         ){
-            Text(text = "Crear cuenta",
+            Text(text = "Agregar gasto",
                 fontSize = 20.sp
             )
         }
-        Text (
-            text = "¿Tienes cuenta? Inicia sesión",
-            color = Color(151,151,151),
-            fontSize = 18.sp,
-            modifier = modifier
-                .padding(top = 20.dp)
-                .align(Alignment.CenterHorizontally)
-        )
     }
+
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun TrackerPreview() {
     ProfitPulseTheme {
-        newAccount()
+        expenseTracker()
     }
 }

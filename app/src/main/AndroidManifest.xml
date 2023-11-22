@@ -13,9 +13,8 @@
         android:theme="@style/Theme.ProfitPulse"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.screens.LogIn"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.ProfitPulse">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +22,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.screens.Expenses"
+            android:exported="true"
+            android:theme="@style/Theme.ProfitPulse" />
+        <activity
+            android:name=".ui.screens.CreateAccount"
+            android:exported="true"
+            android:theme="@style/Theme.ProfitPulse" />
+        <activity
+            android:name=".ui.screens.Home"
+            android:exported="true"
+            android:theme="@style/Theme.ProfitPulse" />
+        <activity
+            android:name=".ui.screens.Reminders"
+            android:exported="true"
+            android:theme="@style/Theme.ProfitPulse" />
     </application>
 
 </manifest>
