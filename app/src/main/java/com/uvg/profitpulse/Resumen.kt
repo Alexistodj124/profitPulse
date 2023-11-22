@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -55,7 +56,7 @@ fun Summary( modifier: Modifier = Modifier) {
                 .size(30.dp)
         )
         Text(
-            text = "Resumen",
+            text = stringResource(R.string.Summary),
             textAlign = TextAlign.Center,
             fontSize = 30.sp,
             fontWeight = FontWeight.SemiBold,
@@ -71,7 +72,7 @@ fun Summary( modifier: Modifier = Modifier) {
                 .background(Color.Transparent)
         )
         Text(
-            text = "Rendimiento de ventas",
+            text = stringResource(R.string.Performance_sales),
             textAlign = TextAlign.Right,
             fontSize = 16.sp,
             modifier = modifier
