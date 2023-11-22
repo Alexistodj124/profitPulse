@@ -2,4 +2,10 @@
     <string name="app_name">ProfitPulse</string>
     <string name="HomeGreeting">Bienvenido</string>
     <string name="Login">Iniciar Sesión</string>
+    <string name="Expenses">Resumen de gastos</string>
+    <string name="Sales">Resumen de ventas</string>
+    <string name="Revenue">Cálculo de ganancias</string>
+    <string name="Summary">Resumen</string>
+    <string name="Reminders">Recordatorios</string>
+    <string name="Menu_Title">Menu</string>
 </resources>
