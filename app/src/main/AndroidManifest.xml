@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ProfitPulse"
         tools:targetApi="31">
         <activity
-            android:name=".ui.screens.Reminders"
+            android:name=".ui.screens.LogIn"
             android:exported="true"
             android:theme="@style/Theme.ProfitPulse">
             <intent-filter>
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.screens."
+            android:name=".ui.screens.Expenses"
             android:exported="true"
             android:theme="@style/Theme.ProfitPulse" />
         <activity
@@ -35,7 +35,7 @@
             android:exported="true"
             android:theme="@style/Theme.ProfitPulse" />
         <activity
-            android:name=".ui.screens.LogIn"
+            android:name=".ui.screens.Reminders"
             android:exported="true"
             android:theme="@style/Theme.ProfitPulse" />
     </application>

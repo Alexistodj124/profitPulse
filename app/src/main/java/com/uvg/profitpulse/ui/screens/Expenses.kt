@@ -44,9 +44,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uvg.profitpulse.R
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
+import com.uvg.profitpulse.utils.AuthManager
+import com.uvg.profitpulse.utils.RealtimeManager
 
 
+class Expenses : ComponentActivity() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        setContent {
+            ProfitPulseTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    expenseTracker()
+                }
+            }
+        }
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun expenseTracker( modifier: Modifier = Modifier) {

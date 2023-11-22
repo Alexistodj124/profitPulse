@@ -1,6 +1,5 @@
 package com.uvg.profitpulse.ui.screens
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,7 +32,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,6 +57,8 @@ class Reminders : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        realtimeManager = RealtimeManager(getApplicationContext())
+        authManager = AuthManager()
         setContent {
             ProfitPulseTheme {
                 // A surface container using the 'background' color from the theme
@@ -102,7 +102,6 @@ fun reminders(realtimeManager: RealtimeManager, authManager: AuthManager){
                 .background(Color.White)
                 .fillMaxSize()
 
-                .verticalScroll(rememberScrollState())
 
         ) {
 

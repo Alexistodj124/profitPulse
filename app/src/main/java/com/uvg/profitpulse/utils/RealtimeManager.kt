@@ -5,14 +5,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.core.Context
 import com.uvg.profitpulse.Model.Gastos
 import com.uvg.profitpulse.Model.Recordatorios
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class RealtimeManager(context: Context) {
+class RealtimeManager(context: android.content.Context) {
     private val databaseReferenceG: DatabaseReference = FirebaseDatabase.getInstance().reference.child("gastos")
     private val databaseReferenceR: DatabaseReference = FirebaseDatabase.getInstance().reference.child("recordatorios")
     private val authManager = AuthManager()

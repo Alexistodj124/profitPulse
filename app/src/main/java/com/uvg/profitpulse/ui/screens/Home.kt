@@ -2,7 +2,6 @@ package com.uvg.profitpulse.ui.screens
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.CalendarContract
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -18,10 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -33,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,7 +39,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.firebase.database.core.Context
-import com.uvg.profitpulse.Model.Recordatorios
 import com.uvg.profitpulse.R
 import com.uvg.profitpulse.ui.theme.ProfitPulseTheme
 import com.uvg.profitpulse.utils.AuthManager
@@ -138,7 +131,7 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
                 .padding(start = 40.dp, top = 10.dp)
         )
         Button(onClick = {
-            mContext.startActivity(Intent(mContext, Reminders::class.java))
+            mContext.startActivity(Intent(mContext, Expenses::class.java))
         },
         modifier = modifier
             .align(Alignment.CenterHorizontally)
@@ -204,15 +197,7 @@ fun HomeScreen(modifier: Modifier    = Modifier) {
 
     }
 }
-@Composable
-fun BottomNavGraph(navController: NavHostController, context: Context, authManager: AuthManager) {
-    val realtime = RealtimeManager(context)
-    NavHost(navController = navController, startDestination = BottomNavScreen.Contact.route) {
-        composable(route = BottomNavScreen.Contact.route) {
-            reminders(realtimeManager = realtime, authManager = authManager)
-        }
-    }
-}
+
 
 sealed class BottomNavScreen(val route: String, val title: String) {
     object Contact : BottomNavScreen(
