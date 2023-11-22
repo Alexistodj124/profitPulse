@@ -38,13 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-<<<<<<< HEAD
 import androidx.compose.ui.text.input.KeyboardType
-=======
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
->>>>>>> c14e3c43d7f5c1b2036fb847ab64b395f3396213
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -78,7 +72,6 @@ class Expenses : ComponentActivity() {
 }
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-<<<<<<< HEAD
 fun ExpenseTracker(modifier: Modifier = Modifier, realtimeManager: RealtimeManager, authManager: AuthManager) {
     var description by remember { mutableStateOf("") }
     var amount by remember { mutableStateOf(0.0) }
@@ -87,46 +80,18 @@ fun ExpenseTracker(modifier: Modifier = Modifier, realtimeManager: RealtimeManag
 
 
     Column(modifier.fillMaxSize()){
-=======
-fun expenseTracker( modifier: Modifier = Modifier) {
-    var expenseName by remember { mutableStateOf("") }
-    var expenseValue by remember { mutableStateOf("") }
-    Column{
-        Text(
-            text = stringResource(R.string.Expenses_Title),
-            style = TextStyle(fontSize = 18.sp),
-            fontWeight = FontWeight.Bold,
-            modifier = modifier
-                .fillMaxSize()
-                .padding(28.dp)
-        )
->>>>>>> c14e3c43d7f5c1b2036fb847ab64b395f3396213
         Image(
-            painter = painterResource(id = R.drawable.flecha_correcta__2_),
+            painter = painterResource(id = R.drawable.flecha_correcta__1_),
             contentDescription = null,
             modifier = modifier
                 .padding(top = 30.dp, start = 25.dp)
                 .size(30.dp)
         )
-<<<<<<< HEAD
         Text(
             text = "Registro de gastos",
             textAlign = TextAlign.Center,
             fontSize = 30.sp,
             fontWeight = FontWeight.SemiBold,
-=======
-        TextField(
-            value = expenseName,
-            label = {
-                Text(
-                    text = stringResource(R.string.Expense_name),
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color(15, 223, 105)
-                )
-            },
-            onValueChange = {expenseName = it},
->>>>>>> c14e3c43d7f5c1b2036fb847ab64b395f3396213
             modifier = modifier
                 .align(Alignment.Start)
                 .padding(start = 35.dp, top = 25.dp)
@@ -143,16 +108,9 @@ fun expenseTracker( modifier: Modifier = Modifier) {
             onValueChange = { description = it },
             label = {
                 Text(
-<<<<<<< HEAD
                     "Descripción",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold
-=======
-                    text = stringResource(R.string.Expense_cost),
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color(15, 223, 105)
->>>>>>> c14e3c43d7f5c1b2036fb847ab64b395f3396213
                 )
             },
             modifier = Modifier
@@ -213,14 +171,8 @@ fun expenseTracker( modifier: Modifier = Modifier) {
                 containerColor = Color (32, 193, 102)
             )
         ){
-<<<<<<< HEAD
             Text(text = "Agregar gasto",
                 fontSize = 25.sp)
-=======
-            Text(text = stringResource(R.string.Add_expense),
-                fontSize = 20.sp
-            )
->>>>>>> c14e3c43d7f5c1b2036fb847ab64b395f3396213
         }
         val expenses: List<Gastos> = realtimeManager.getGasto().collectAsState(emptyList()).value
         if (expenses.isEmpty()) {
