@@ -1,6 +1,7 @@
 package com.uvg.profitpulse.ui.screens
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -97,6 +98,9 @@ fun reminders(realtimeManager: RealtimeManager, authManager: AuthManager){
         )
         val recordatorios by realtimeManager.getReminder()
             .collectAsState(emptyList())
+        if (recordatorios.isEmpty()) {
+            Log.d("TotalGastos", "La lista de recordatorios está vacía")
+        }
         LazyColumn(
             modifier = Modifier
                 .background(Color.White)
@@ -156,6 +160,7 @@ fun CircularButtonWithPlusSign() {
 
 @Composable
 fun ReminderRow(reminder: Recordatorios,realtimeManager: RealtimeManager, onCheckedChange: (Boolean) -> Unit) {
+    Log.d("TotalGastos", "Nuevo Reminder")
     Row(
         modifier = Modifier
             .fillMaxWidth()
