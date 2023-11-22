@@ -20,16 +20,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -81,12 +87,7 @@ fun reminders(realtimeManager: RealtimeManager, authManager: AuthManager){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val reco = Recordatorios(
-            recordatorioDate = Date(2023,9,21),
-            recordatorioDescripcion = "HOLA COMO ESTAS",
-            uid = authManager.getCurrentUser()?.uid.toString()
-        )
-        realtimeManager.addRemidner(reco)
+
         Text(
             "Recordatorios",
             textAlign = TextAlign.Center,
@@ -119,21 +120,19 @@ fun reminders(realtimeManager: RealtimeManager, authManager: AuthManager){
                 ) {
 
                     ReminderRow(reminder = recordatorio, realtimeManager = realtimeManager) { isChecked ->
-                        if (isChecked) {
-                            // Do something when the reminder is checked
-                        }
+
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
-    CircularButtonWithPlusSign()
+    CircularButtonWithPlusSign(realtimeManager = realtimeManager, authManager = authManager)
 }
 
 
 @Composable
-fun CircularButtonWithPlusSign() {
+fun CircularButtonWithPlusSign(realtimeManager: RealtimeManager, authManager: AuthManager) {
     var text by remember { mutableStateOf("") }
 
     Box(
@@ -142,8 +141,10 @@ fun CircularButtonWithPlusSign() {
             .padding(10.dp),
         contentAlignment = Alignment.BottomEnd
     ) {
+        var shownewreminder by remember { mutableStateOf(false) }
+        var textValue by remember { mutableStateOf("") }
         FloatingActionButton(
-            onClick = { },
+            onClick = { shownewreminder = true},
             modifier = Modifier
                 .size(75.dp)
                 .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape),
@@ -153,6 +154,22 @@ fun CircularButtonWithPlusSign() {
                 imageVector = Icons.Default.Add,
                 contentDescription = null,
                 tint = Color.White
+            )
+        }
+        if (shownewreminder) {
+            newReminder(
+                onDismiss = { shownewreminder = false },
+                onConfirm = {
+                    val reco = Recordatorios(
+                        recordatorioDate = Date(2023,9,21),
+                        recordatorioDescripcion = textValue,
+                        uid = authManager.getCurrentUser()?.uid.toString()
+                    )
+                    realtimeManager.addRemidner(reco)
+                    shownewreminder = false
+                },
+                textValue = textValue,
+                onTextValueChange = { textValue = it }
             )
         }
     }
@@ -178,20 +195,60 @@ fun ReminderRow(reminder: Recordatorios,realtimeManager: RealtimeManager, onChec
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
             )
-            Text(
-                text = "Date:" + reminder.recordatorioDate,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.primary
-            )
         }
         Checkbox(
             checked = checkedState,
             onCheckedChange = { isChecked ->
                 checkedState = isChecked
                 onCheckedChange(isChecked)
+                if (isChecked) {
+                    // Do something when checked
+                    realtimeManager.deleteReminder(reminder.key ?: "")
+                }
             }
         )
 
 
     }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun newReminder(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+    textValue: String,
+    onTextValueChange: (String) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Ingrese un nuevo recordatorio") },
+        text = {
+            Column {
+                TextField(
+                    value = textValue,
+                    onValueChange = { onTextValueChange(it) },
+                    label = { Text("Text") },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Text
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirm()
+                    onDismiss()
+                }
+            ) {
+                Text("Submit")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
 }
