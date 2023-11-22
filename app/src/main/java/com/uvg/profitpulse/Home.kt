@@ -69,6 +69,13 @@
             R.string.Summary,
             R.string.Reminders
         )
+        val menuImages = listOf(
+            R.drawable.expenses,
+            R.drawable.sales,
+            R.drawable.revenue,
+            R.drawable.summary,
+            R.drawable.reminders
+        )
         Column(modifier.fillMaxSize()){
             Row( modifier = Modifier
                 .padding(5.dp)){
@@ -103,21 +110,7 @@
                         .padding(start = 49.dp, end = 10.dp)
                         .align(Alignment.CenterHorizontally)
                     ){
-                        Text(
-                            text = "Resumen de ganancias mensuales",
-                            fontSize = 19.sp,
-                            modifier = modifier
-                                .align(Alignment.CenterHorizontally)
-                                .padding(top = 15.dp),
-                            textAlign = TextAlign.Center
-                        )
-                        Text(
-                            text = "Q. 22000",
-                            fontSize = 18.sp,
-                            modifier = modifier
-                                .align(Alignment.CenterHorizontally)
-                                .padding(top = 10.dp)
-                        )
+
                     }
                 }
             }
@@ -130,7 +123,7 @@
                item{
                    Text(
                        text = stringResource(R.string.Menu_Title),
-                       fontSize = 20.sp,
+                       fontSize = 25.sp,
                        modifier = modifier
                            .padding(top = 15.dp)
                    )
@@ -141,6 +134,7 @@
                        modifier = Modifier
                            .fillMaxWidth()
                            .padding(vertical = 9.dp,)
+                           .width(300.dp)
                            .clickable {
     
                            }
@@ -152,6 +146,7 @@
                                 .padding(16.dp)
                                 .align(Alignment.CenterHorizontally)
                         )
+
                    }
                }
            }
